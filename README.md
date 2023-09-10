@@ -1,9 +1,7 @@
 # outline_vpn_api
+
 Ruby API wrapper for Outline VPN Server https://getoutline.org/
-
-# OutlineVpnApi::Client
-
-The `OutlineVpnApi` is a Ruby client for interacting with the Outline VPN Server API. It provides a simple interface to manage and retrieve information about VPN keys, metrics, and other related functionalities.
+It provides a simple interface to manage and retrieve information about VPN keys, metrics, and other related functionalities.
 
 ## Installation
 
