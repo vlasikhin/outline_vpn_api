@@ -6,51 +6,66 @@ require "json"
 module OutlineVpnApi
   class Client
     include HTTParty
-    base_uri ""
-    default_options.update(verify: false)
     headers "Content-Type" => "application/json"
+    default_options.update(verify: false)
 
     def initialize(api_url)
       self.class.base_uri(api_url)
     end
 
-    attr_reader :api_url
-
     def keys_list
-      parse_response(self.class.get("/access-keys"))["accessKeys"]
+      get("/access-keys")["accessKeys"]
     end
 
-    def transfered_data_by_id
-      parse_response(self.class.get("/metrics/transfer"))
+    def transferred_data_by_id
+      get("/metrics/transfer")
     end
 
     def create_key
-      parse_response(self.class.post("/access-keys"))
+      post("/access-keys")
     end
 
     def set_limit(key_id, limit)
-      response = self.class.put("/access-keys/#{key_id}/data-limit", body: { limit: { bytes: limit } }.to_json)
-      handle_response(response, "Limit for key_id:#{key_id} is #{limit} bytes")
+      body = { limit: { bytes: limit } }.to_json
+      put("/access-keys/#{key_id}/data-limit", body, "Limit for key_id: #{key_id} is #{limit} bytes")
     end
 
     def rename_key(key_id, name)
-      response = self.class.put("/access-keys/#{key_id}/name", body: { name: }.to_json)
-      handle_response(response, "key_id:#{key_id}, renamed to #{name}")
+      body = { name: }.to_json
+      put("/access-keys/#{key_id}/name", body, "key_id: #{key_id}, renamed to #{name}")
     end
 
     def delete_key(key_id)
       response = self.class.delete("/access-keys/#{key_id}")
-      handle_response(response, "key_id:#{key_id}, deleted")
+      handle_response(response, "key_id: #{key_id}, deleted")
     end
 
     private
+
+    def get(endpoint)
+      parse_response(self.class.get(endpoint))
+    end
+
+    def post(endpoint, body = {})
+      parse_response(self.class.post(endpoint, body:))
+    end
+
+    def put(endpoint, body, success_message)
+      response = self.class.put(endpoint, body:)
+      handle_response(response, success_message)
+    end
 
     def parse_response(response)
       JSON.parse(response.body)
     end
 
     def handle_response(response, success_message)
-      response.code.to_i == 204 ? puts(success_message) : parse_response(response)
+      if response.code.to_i == 204
+        puts(success_message)
+        nil
+      else
+        parse_response(response)
+      end
     end
   end
 end

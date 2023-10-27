@@ -43,7 +43,7 @@ describe OutlineVpnApi::Client do
       stub_request(:get, "#{api_url}/metrics/transfer")
         .to_return(status: 200, body: stubbed_response.to_json)
 
-      expect(client.transfered_data_by_id).to eq(stubbed_response)
+      expect(client.transferred_data_by_id).to eq(stubbed_response)
     end
   end
 
@@ -78,7 +78,7 @@ describe OutlineVpnApi::Client do
         .with(body: { limit: { bytes: limit } }.to_json)
         .to_return(status: 204)
 
-      expect { client.set_limit(key_id, limit) }.to output("Limit for key_id:#{key_id} is #{limit} bytes\n").to_stdout
+      expect { client.set_limit(key_id, limit) }.to output("Limit for key_id: #{key_id} is #{limit} bytes\n").to_stdout
     end
   end
 
@@ -91,7 +91,7 @@ describe OutlineVpnApi::Client do
         .with(body: { name: new_name }.to_json)
         .to_return(status: 204)
 
-      expect { client.rename_key(key_id, new_name) }.to output("key_id:#{key_id}, renamed to #{new_name}\n").to_stdout
+      expect { client.rename_key(key_id, new_name) }.to output("key_id: #{key_id}, renamed to #{new_name}\n").to_stdout
     end
   end
 
@@ -102,7 +102,7 @@ describe OutlineVpnApi::Client do
       stub_request(:delete, "#{api_url}/access-keys/#{key_id}")
         .to_return(status: 204)
 
-      expect { client.delete_key(key_id) }.to output("key_id:#{key_id}, deleted\n").to_stdout
+      expect { client.delete_key(key_id) }.to output("key_id: #{key_id}, deleted\n").to_stdout
     end
   end
 end
