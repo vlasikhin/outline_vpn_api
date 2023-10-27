@@ -31,12 +31,12 @@ Fetches a list of all keys:
 keys = client.keys_list
 ```
 
-#### `transfered_data_by_id`
+#### `transferred_data_by_id`
 
 Fetches the transferred data metrics:
 
 ```ruby
-data = client.transfered_data_by_id
+data = client.transferred_data_by_id
 ```
 
 #### `create_key`
